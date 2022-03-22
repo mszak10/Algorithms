@@ -21,32 +21,28 @@ def next_gen(cells):
 
     def check_for_adj():
         tab = []
-        tabb = []
+
         for r in range(rowlen):
             try:
                 for c in range(collumnlen):  # PURPOSE: iteration through all cells
                     try:
-                        # print(r, c)  # DEBUG
                         count = 0
                         for i in range(len(surrounding)):
                             try:
                                 if r + surrounding[i][1] < 0 or c + surrounding[i][2] < 0:
                                     continue
                                 if cells[r + surrounding[i][1]][c + surrounding[i][2]] == 1:
-                                    # print('if i=', i, cells[r][c], cells[r + surrounding[i][1]][c + surrounding[i][2]])
                                     count += 1
                             except IndexError:
                                 continue
                         tab.append(count)
                     except IndexError:
                         continue
-                    # print(count)
 
             except IndexError:
                 continue
         tabb = np.reshape(tab, (rowlen, collumnlen))
-        print(tab)
-        print(tabb)
+        print(tabb)  # PURPOSE: number of adjecent live cells
         return tabb
 
     def boolify(num):  # PURPOSE: None - don't change; True - set to one; False - set to zero
@@ -59,7 +55,7 @@ def next_gen(cells):
         else:
             return False
 
-    print(cells)
+    print(cells)  # PURPOSE: initial table
 
     adj = check_for_adj()
 
@@ -69,20 +65,22 @@ def next_gen(cells):
             booltab.append(boolify(adj[a][b]))
 
     booltab2d = np.reshape(booltab, (rowlen, collumnlen))
-    print(booltab2d)
+    print(booltab2d)  # PURPOSE: what to change: true = 1, false = 0, none = keep the value
 
     for i in range(len(booltab2d)):
         for j, v in enumerate(booltab2d[i]):
-            if v is False:
-                rettab.append(0)
+            # print(v, 'v')
+            if v is False:  # ERROR this seems not to work in py 3.8, but it works in 3.9
+                # TODO research the problem The truth value of an array with more than one element is ambiguous.
+                #  Use a.any() or a.all()
+                rettab.append(0)  # PURPOSE: if the value in booltab2d is False, set to 0
                 continue
             elif v:
-                rettab.append(1)
+                rettab.append(1)  # PURPOSE: if the value in booltab2d is True, set to 1
                 continue
             else:
-                rettab.append(cells[i][j])
+                rettab.append(cells[i][j])  # PURPOSE: otherwise, get the value from initial table
 
-    print(rettab)
     return np.reshape(rettab, (rowlen, collumnlen))
 
 
