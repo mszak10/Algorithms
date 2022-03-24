@@ -9,14 +9,14 @@ def next_gen(cells):
     rettab = []
 
     surrounding = [
-        [1, -1, -1],
-        [2, -1, 0],
-        [3, -1, 1],
-        [3, 0, -1],
-        [4, 0, 1],
-        [5, 1, -1],
-        [6, 1, 0],
-        [7, 1, 1]
+        [-1, -1],
+        [-1, 0],
+        [-1, 1],
+        [0, -1],
+        [0, 1],
+        [1, -1],
+        [1, 0],
+        [1, 1]
     ]
 
     def check_for_adj():
@@ -27,11 +27,11 @@ def next_gen(cells):
                 for c in range(collumnlen):  # PURPOSE: iteration through all cells
                     try:
                         count = 0
-                        for i in range(len(surrounding)):
+                        for x in range(len(surrounding)):
                             try:
-                                if r + surrounding[i][1] < 0 or c + surrounding[i][2] < 0:
+                                if r + surrounding[x][0] < 0 or c + surrounding[x][1] < 0:
                                     continue
-                                if cells[r + surrounding[i][1]][c + surrounding[i][2]] == 1:
+                                if cells[r + surrounding[x][0]][c + surrounding[x][1]] == 1:
                                     count += 1
                             except IndexError:
                                 continue
@@ -69,17 +69,16 @@ def next_gen(cells):
 
     for i in range(len(booltab2d)):
         for j, v in enumerate(booltab2d[i]):
-            # print(v, 'v')
             if v is False:  # ERROR this seems not to work in py 3.8, but it works in 3.9
                 # TODO research the problem The truth value of an array with more than one element is ambiguous.
-                #  Use a.any() or a.all()
+                #  Use a.any() or a.all(). This might be codewars specific problem
                 rettab.append(0)  # PURPOSE: if the value in booltab2d is False, set to 0
                 continue
             elif v:
                 rettab.append(1)  # PURPOSE: if the value in booltab2d is True, set to 1
                 continue
             else:
-                rettab.append(cells[i][j])  # PURPOSE: otherwise, get the value from initial table
+                rettab.append(cells[i][j])  # PURPOSE: otherwise, get the valfrom initial table
 
     return np.reshape(rettab, (rowlen, collumnlen))
 
